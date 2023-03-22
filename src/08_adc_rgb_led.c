@@ -31,20 +31,19 @@ int main(void) {
   I2CConverter* adc = malloc(sizeof(I2CConverter));
   init(adc);
 
-  softPwmCreate(rgb[0], 0, 100);
-  softPwmCreate(rgb[1], 0, 100);
-  softPwmCreate(rgb[2], 0, 100);
+  softPwmCreate(rgb[0], 0, 255);
+  softPwmCreate(rgb[1], 0, 255);
+  softPwmCreate(rgb[2], 0, 255);
   while (!exit_flag) {
     for (int channel = 0; channel < 3; channel++) {
       int data = read(adc, channel);
-      // float voltage = (data / 255.0) * 3.3;
-      // printf("channel: %d, data: %d, voltage: %.2f\n", channel, data,
-      // voltage);
+      float voltage = (data / 255.0) * 3.3;
+      printf("channel: %d, data: %d, voltage: %.2f\n", channel, data, voltage);
 
-      softPwmWrite(rgb[channel], (255 - data) * 100 / 255);
+      softPwmWrite(rgb[channel], 255 - data);
     }
-    // printf("\n");
-    // delay(300);
+    printf("\n");
+    delay(300);
   }
   cleanup();
   return 0;
